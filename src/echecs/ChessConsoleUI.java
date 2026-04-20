@@ -54,10 +54,30 @@ public class ChessConsoleUI implements ChessUI {
         }
     }
 
+    @Override
+    public Piece demanderPromotion(boolean estBlanc) {
+        System.out.println("Promotion ! Choisissez une pièce :");
+        System.out.println("  1 - Dame");
+        System.out.println("  2 - Tour");
+        System.out.println("  3 - Cavalier");
+        System.out.println("  4 - Fou");
+
+        while (true) {
+            System.out.print("Votre choix (1-4) : ");
+            String input = scanner.nextLine().trim();
+            switch (input) {
+                case "1": return new Dame(estBlanc);
+                case "2": return new Tour(estBlanc);
+                case "3": return new Cavalier(estBlanc);
+                case "4": return new Fou(estBlanc);
+                default:  System.out.println("Choix invalide, entrez 1, 2, 3 ou 4.");
+            }
+        }
+    }
+
     private boolean estFormatValide(String input) {
         if (input.length() != 2) return false;
-        char col = input.charAt(0);
-        char lig = input.charAt(1);
-        return col >= 'a' && col <= 'h' && lig >= '1' && lig <= '8';
+        return input.charAt(0) >= 'a' && input.charAt(0) <= 'h'
+                && input.charAt(1) >= '1' && input.charAt(1) <= '8';
     }
 }

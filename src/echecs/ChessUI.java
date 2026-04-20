@@ -22,4 +22,11 @@ public interface ChessUI {
      * @return une Coordonnees valide (la validation du format est à la charge de l'implémentation)
      */
     Coordonnees demanderCoordonnees(String type);
+
+    /**
+     * Demande au joueur quelle pièce il veut lors d'une promotion.
+     * @param estBlanc couleur du joueur qui promeut
+     * @return la pièce choisie, prête à être placée sur le plateau
+     */
+    Piece demanderPromotion(boolean estBlanc);
 }

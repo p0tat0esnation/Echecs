@@ -1,44 +1,69 @@
 package echecs;
 
 /**
- * Contrôleur principal du jeu.
- * Contient uniquement la logique métier : tour de jeu, changement de joueur, état de la partie.
- * Ne fait aucun appel à System.out ou Scanner directement.
+ * Contrôleur principal du jeu. Zéro I/O.
  */
 public class GameController {
 
     private Plateau plateau;
-    private boolean joueurBlanc; // true = blancs, false = noirs
-    private ChessUI ui;
+    private boolean joueurBlanc;
+    private final ChessUI ui;
 
     public GameController(ChessUI ui) {
-        this.plateau = new Plateau();
+        this.plateau     = new Plateau();
         this.joueurBlanc = true;
-        this.ui = ui;
+        this.ui          = ui;
     }
 
     public void lancer() {
         while (true) {
             ui.afficherPlateau(plateau);
-            ui.afficherMessage((joueurBlanc ? "Blancs" : "Noirs") + ", à vous de jouer !");
 
-            boolean coupValide = false;
-            while (!coupValide) {
-                Coordonnees depart  = ui.demanderCoordonnees("Départ");
-                Coordonnees arrivee = ui.demanderCoordonnees("Arrivée");
+            // Vérifier l'état de la partie AVANT le tour du joueur courant
+            if (plateau.estEchecEtMat(joueurBlanc)) {
+                ui.afficherMessage("Échec et mat ! Les " + couleur(!joueurBlanc) + " gagnent.");
+                break;
+            }
+            if (plateau.estPat(joueurBlanc)) {
+                ui.afficherMessage("Pat ! Match nul.");
+                break;
+            }
+            if (plateau.estEnEchec(joueurBlanc)) {
+                ui.afficherMessage("Échec au roi des " + couleur(joueurBlanc) + " !");
+            }
 
-                coupValide = plateau.deplacer(depart, arrivee, joueurBlanc);
+            ui.afficherMessage(couleur(joueurBlanc) + ", à vous de jouer !");
 
-                if (!coupValide) {
+            // Demander un coup valide
+            MoveResult resultat = MoveResult.INVALIDE;
+            Coordonnees arrivee = null;
+
+            while (resultat == MoveResult.INVALIDE) {
+                Coordonnees depart = ui.demanderCoordonnees("Départ");
+                arrivee            = ui.demanderCoordonnees("Arrivée");
+
+                resultat = plateau.deplacer(depart, arrivee, joueurBlanc);
+
+                if (resultat == MoveResult.INVALIDE) {
                     ui.afficherMessage("Coup invalide, recommencez.");
                 }
+            }
+
+            // Promotion
+            if (resultat == MoveResult.PROMOTION) {
+                Piece nouvellePiece = ui.demanderPromotion(joueurBlanc);
+                plateau.promouvoir(arrivee, nouvellePiece);
             }
 
             joueurBlanc = !joueurBlanc;
         }
     }
 
-    // --- Accesseurs utiles pour les futures règles (échec, mat, etc.) ---
+    // -------------------------------------------------------------------------
+
+    private String couleur(boolean blanc) {
+        return blanc ? "Blancs" : "Noirs";
+    }
 
     public Plateau getPlateau() {
         return plateau;
