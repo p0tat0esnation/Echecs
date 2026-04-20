@@ -1,6 +1,7 @@
 package echecs;
 
 public class Plateau {
+
     private Piece[][] cases;
 
     public Plateau() {
@@ -9,45 +10,68 @@ public class Plateau {
     }
 
     private void initialiser() {
-        // Initialisation des pièces sur le plateau (à compléter)
+        // Pions
         for (int i = 0; i < 8; i++) {
-            cases[1][i] = new Pion(true); // Pions blancs
-            cases[6][i] = new Pion(false); // Pions noirs
+            cases[1][i] = new Pion(false); // noirs
+            cases[6][i] = new Pion(true);  // blancs
         }
-        cases[0][0] = new Tour(true);
-        cases[0][7] = new Tour(true);
-        cases[7][0] = new Tour(false);
-        cases[7][7] = new Tour(false);
-        cases[0][1] = new Cavalier(true);
-        cases[0][6] = new Cavalier(true);
-        cases[7][1] = new Cavalier(false);
-        cases[7][6] = new Cavalier(false);
-        cases[0][2] = new Fou(true);
-        cases[0][5] = new Fou(true);
-        cases[7][2] = new Fou(false);
-        cases[7][5] = new Fou(false);
-        cases[0][3] = new Dame(true);
-        cases[0][4] = new Roi(true);
-        cases[7][3] = new Dame(false);
-        cases[7][4] = new Roi(false);
+        // Tours
+        cases[0][0] = new Tour(false);
+        cases[0][7] = new Tour(false);
+        cases[7][0] = new Tour(true);
+        cases[7][7] = new Tour(true);
+        // Cavaliers
+        cases[0][1] = new Cavalier(false);
+        cases[0][6] = new Cavalier(false);
+        cases[7][1] = new Cavalier(true);
+        cases[7][6] = new Cavalier(true);
+        // Fous
+        cases[0][2] = new Fou(false);
+        cases[0][5] = new Fou(false);
+        cases[7][2] = new Fou(true);
+        cases[7][5] = new Fou(true);
+        // Dames et rois (dame sur sa couleur : dame blanche en d1=col3, dame noire en d8=col3)
+        cases[0][3] = new Dame(false); // dame noire en d8
+        cases[0][4] = new Roi(false);  // roi  noir  en e8
+        cases[7][3] = new Dame(true);  // dame blanche en d1
+        cases[7][4] = new Roi(true);   // roi  blanc  en e1
     }
 
-    public void afficher() {
-        // Affichage ASCII du plateau (à compléter)
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (cases[i][j] == null) {
-                    System.out.print(". ");
-                } else {
-                    System.out.print(cases[i][j].toString() + " ");
-                }
-            }
-            System.out.println();
-        }
+    public boolean deplacer(Coordonnees depart, Coordonnees arrivee, boolean blanc) {
+        if (cases[depart.ligne][depart.colonne] == null) return false;
+        if (cases[depart.ligne][depart.colonne].estBlanc() != blanc) return false;
+
+        if (!cases[depart.ligne][depart.colonne].estMouvementValide(depart, arrivee, this)) return false;
+
+        // Interdit de capturer une pièce alliée
+        if (cases[arrivee.ligne][arrivee.colonne] != null
+                && cases[arrivee.ligne][arrivee.colonne].estBlanc() == blanc) return false;
+
+        cases[arrivee.ligne][arrivee.colonne] = cases[depart.ligne][depart.colonne];
+        cases[depart.ligne][depart.colonne] = null;
+        return true;
     }
 
-    public boolean deplacer(coordonnees depart, coordonnees arrivee, boolean blanc) {
-        // Vérifier validité, déplacer la pièce si possible (à compléter)
-        return false;
+    // --- Accesseurs ---
+
+    /**
+     * Retourne la grille brute. Utilisé par l'UI pour l'affichage.
+     * Ne pas modifier le tableau retourné.
+     */
+    public Piece[][] getCases() {
+        return cases;
+    }
+
+    public Piece getPiece(int ligne, int colonne) {
+        if (!estDansPlateau(ligne, colonne)) return null;
+        return cases[ligne][colonne];
+    }
+
+    public boolean estDansPlateau(int ligne, int colonne) {
+        return ligne >= 0 && ligne < 8 && colonne >= 0 && colonne < 8;
+    }
+
+    public boolean estCaseVide(int ligne, int colonne) {
+        return getPiece(ligne, colonne) == null;
     }
 }

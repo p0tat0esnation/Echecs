@@ -6,13 +6,14 @@ public class Cavalier extends Piece {
     }
 
     @Override
-    public boolean estMouvementValide(coordonnees depart, coordonnees arrivee, Plateau plateau) {
+    public boolean estMouvementValide(Coordonnees depart, Coordonnees arrivee, Plateau plateau) {
         // Logique de déplacement du cavalier (à compléter)
+        
         return false;
     }
 
     @Override
     public String toString() {
-        return Character.toString((char) listepiece.cavalier(estBlanc));
+        return Character.toString((char) ListePiece.cavalier(estBlanc));
     }
 }

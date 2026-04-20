@@ -1,0 +1,74 @@
+flowchart TD
+    A[Main.main] --> B[Chess.lancer]
+
+    B --> C[Chess.afficher]
+    C --> D[Plateau.afficher]
+
+    B --> E[Chess.demanderCoordonnees Depart]
+    B --> F[Chess.demanderCoordonnees Arrivee]
+
+    B --> G[Plateau.deplacer]
+
+    G --> H{Piece presente et bonne couleur?}
+    H -- non --> X[Coup invalide]
+
+    H -- oui --> I[Piece.estMouvementValide]
+
+    I --> J[Pion.estMouvementValide]
+    I --> K[Tour.estMouvementValide]
+    I --> L[Fou.estMouvementValide]
+    I --> M[Cavalier.estMouvementValide]
+    I --> N[Dame.estMouvementValide]
+    I --> O[Roi.estMouvementValide]
+
+    J --> P{Regles pion ok?}
+    K --> Q{Regles tour ok?}
+    L --> R{Regles fou ok?}
+    M --> S{Regles cavalier ok?}
+    N --> T{Regles dame ok?}
+    O --> U{Regles roi ok?}
+
+    P -- oui --> V[Verifier capture alliee]
+    Q -- oui --> V
+    R -- oui --> V
+    S -- oui --> V
+    T -- oui --> V
+    U -- oui --> V
+
+    P -- non --> X
+    Q -- non --> X
+    R -- non --> X
+    S -- non --> X
+    T -- non --> X
+    U -- non --> X
+
+    V --> W{Case arrivee contient allie?}
+    W -- oui --> X
+    W -- non --> Y[Appliquer le deplacement]
+
+    Y --> Z[Changer de joueur]
+    Z --> B
+
+    subgraph ModelesEtUtils
+        AA[Coordonnees]
+        AB[Move]
+        AC[ListePiece]
+    end
+
+    E --> AA
+    F --> AA
+    G --> AA
+    J --> AA
+    K --> AA
+    L --> AA
+    M --> AA
+    N --> AA
+    O --> AA
+
+    D --> AC
+    J --> AC
+    K --> AC
+    L --> AC
+    M --> AC
+    N --> AC
+    O --> AC

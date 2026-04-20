@@ -7,7 +7,7 @@ public abstract class Piece {
         this.estBlanc = estBlanc;
     }
 
-    public abstract boolean estMouvementValide(coordonnees depart, coordonnees arrivee, Plateau plateau);
+    public abstract boolean estMouvementValide(Coordonnees depart, Coordonnees arrivee, Plateau plateau);
 
     public boolean estBlanc() {
         return estBlanc;
@@ -15,4 +15,3 @@ public abstract class Piece {
 
     public abstract String toString();
 }
-
