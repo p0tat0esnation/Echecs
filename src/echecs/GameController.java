@@ -11,10 +11,16 @@ public class GameController {
     private boolean joueurBlanc; // true = blancs, false = noirs
     private ChessUI ui;
 
-    public GameController(ChessUI ui) {
+    public GameController(ChessUI ui, PieceCustomJson[] piecesCustom) {
         this.plateau = new Plateau();
         this.joueurBlanc = true;
         this.ui = ui;
+
+        for (PieceCustomJson p : piecesCustom) {
+            PieceCustom piece = new PieceCustom(p);
+            Coordonnees coord = Coordonnees.depuisNotation(p.position); //exemple : a1 -> ligne/colonne
+            plateau.placerPiece(coord.ligne, coord.colonne, piece);
+        }
     }
 
     public void lancer() {

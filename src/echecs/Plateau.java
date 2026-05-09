@@ -67,6 +67,10 @@ public class Plateau {
         return cases[ligne][colonne];
     }
 
+    public void placerPiece(int ligne, int colonne, Piece piece) {
+        cases[ligne][colonne] = piece;
+    }
+
     public boolean estDansPlateau(int ligne, int colonne) {
         return ligne >= 0 && ligne < 8 && colonne >= 0 && colonne < 8;
     }
