@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         ChessUI ui = new ChessConsoleUI();
         Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez choisir le choix :");
+        System.out.print("Chemin du fichier de pièces custom (ou Entrée pour ignorer) : ");
         String chemin = sc.nextLine().trim();
 
         PieceCustomJson[] piecesCustom = new PieceCustomJson[0];
@@ -15,5 +15,6 @@ public class Main {
         }
 
         GameController jeu = new GameController(ui, piecesCustom);
+        jeu.lancer();
     }
 }

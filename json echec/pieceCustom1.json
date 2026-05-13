@@ -1,0 +1,30 @@
+[
+  {
+    "nom": "Sorciere",
+    "unicode": "♕",
+    "couleur": "BLANC",
+    "position": "d4",
+    "deplacements": [
+      { "type": "diagonale", "distance": 3 },
+      { "type": "ligne", "distance": 2 }
+    ]
+  },
+  {
+    "nom": "Archer",
+    "unicode": "♗",
+    "couleur": "NOIR",
+    "position": "g7",
+    "deplacements": [
+      { "type": "diagonale", "distance": 2 }
+    ]
+  },
+  {
+    "nom": "CavalierLourd",
+    "unicode": "♘",
+    "couleur": "BLANC",
+    "position": "b1",
+    "deplacements": [
+      { "type": "cavalier", "distance": 1 }
+    ]
+  }
+]
